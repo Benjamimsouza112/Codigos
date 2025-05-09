@@ -1,0 +1,27 @@
+name: Rodar script automaticamente
+
+on:
+  schedule:
+    # Executa a cada 6 horas (em UTC)
+    - cron: '0 */6 * * *'
+  workflow_dispatch:  # Permite rodar manualmente também
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar o repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependências
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Rodar o script
+        run: python meuscript.py
